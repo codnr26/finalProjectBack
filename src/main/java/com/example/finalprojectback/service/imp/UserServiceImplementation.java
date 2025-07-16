@@ -3,10 +3,10 @@ package com.example.finalprojectback.service.imp;
 import com.example.finalprojectback.entity.User;
 import com.example.finalprojectback.repository.UserRepository;
 import com.example.finalprojectback.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UserServiceImplementation implements UserService {
@@ -27,8 +27,9 @@ public class UserServiceImplementation implements UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Utilisateur non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + id));
     }
+
 
     public User updateUser(Long id, User updatedUser) {
         User existingUser = getUserById(id);
@@ -39,7 +40,7 @@ public class UserServiceImplementation implements UserService {
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new NoSuchElementException("Utilisateur non trouvé avec l'ID : " + id);
+            throw new EntityNotFoundException("Utilisateur non trouvé avec l'ID : " + id);
         }
         userRepository.deleteById(id);
     }
